@@ -9,6 +9,7 @@ import store.utilities.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -79,6 +80,37 @@ public class SequenceConfig extends ConfigExtensionBase {
 			sounds = new int[var3];
 			for (var4 = 0; var4 < var3; ++var4) {
 				sounds[var4] = buffer.read24BitInt();
+			}
+		}
+		else if (opcode == 14) {
+			animMayaID = buffer.readInt();
+		}
+		else if (opcode == 15)
+		{
+			var3 = buffer.readUnsignedShort();
+			animMayaFrameSounds = new HashMap<>();
+
+			for (var4 = 0; var4 < var3; ++var4)
+			{
+				int var5 = buffer.readUnsignedShort();
+				int var6 = buffer.read24BitInt();
+				animMayaFrameSounds.put(var5, var6);
+			}
+		}
+		else if (opcode == 16)
+		{
+			animMayaStart = buffer.readUnsignedShort();
+			animMayaEnd = buffer.readUnsignedShort();
+		}
+		else if (opcode == 17)
+		{
+			animMayaMasks = new boolean[256];
+
+			var3 = buffer.readUnsignedByte();
+
+			for (var4 = 0; var4 < var3; ++var4)
+			{
+				animMayaMasks[buffer.readUnsignedByte()] = true;
 			}
 		} else {
 			System.err.println("sequence : " + id + ", error decoding opcode : " + opcode + ", previous opcodes: " + Arrays.toString(previousOpcodes));
@@ -202,6 +234,12 @@ public class SequenceConfig extends ConfigExtensionBase {
 	public int replyMode = 2;
 	public int frameStep = -1;
 	public int priority = -1;
+
+	public int animMayaID = -1;
+	public Map<Integer, Integer> animMayaFrameSounds;
+	public int animMayaStart;
+	public int animMayaEnd;
+	public boolean[] animMayaMasks;
 
 	private static Map<Field, Integer> fieldPriorities;
 
