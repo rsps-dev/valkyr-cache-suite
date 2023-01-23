@@ -11,6 +11,8 @@ import utility.StringUtilities;
  */
 public enum PluginType {
 
+	STRUCT,
+
 	AREA,
 	INV,
 	FLO,
