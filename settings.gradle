@@ -14,4 +14,7 @@ include 'SuitePlugins:ModelPacker'
 include 'SuitePlugins:EnumPlugin'
 include 'SuitePlugins:SpotAnimPlugin'
 include 'SuitePlugins:CS2Plugin'
+include 'SuitePlugins:StructPlugin'
+include 'SuitePlugins:MapElementPlugin'
+include 'SuitePlugins:InvPlugin'
 
