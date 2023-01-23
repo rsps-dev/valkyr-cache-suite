@@ -2,7 +2,7 @@ import store.plugin.Plugin;
 import store.plugin.PluginType;
 import suite.annotation.PluginDescriptor;
 
-@PluginDescriptor(author = "Rocky", type = PluginType.INV, version = "184")
+@PluginDescriptor(author = "Rocky", type = PluginType.AREA, version = "184")
 public class MapElementPlugin extends Plugin {
 
     @Override
