@@ -71,6 +71,15 @@ public abstract class Stream {
 		writeByte(i);
 	}
 
+	public void writeMedium(int i) {
+		writeByte(i >> 40); // L: 93
+		writeByte(i >> 32); // L: 94
+		writeByte(i >> 24); // L: 95
+		writeByte(i >> 16); // L: 96
+		writeByte(i >> 8); // L: 97
+		writeByte(i); // L: 98
+	}
+
 	/**
 	 * Read an integer.
 	 *
