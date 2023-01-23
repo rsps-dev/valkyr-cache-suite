@@ -108,6 +108,8 @@ public class ObjectConfig extends ConfigExtensionBase {
 				}
 				setRetextureToFind(retextureToFind);
 				setTextureToReplace(textureToReplace);
+			} else if (opcode == 61) {
+					buffer.readUnsignedShort();
 			} else if (opcode == 62) {
 				setRotated(true);
 			} else if (opcode == 64) {
@@ -185,6 +187,7 @@ public class ObjectConfig extends ConfigExtensionBase {
 				setAnInt2105(buffer.readUnsignedByte());
 			} else if (opcode == 82) {
 				setMapAreaId(buffer.readUnsignedShort());
+			} else if (opcode == 89) {
 			} else if (opcode == 92) {
 				int varpID = buffer.readUnsignedShort();
 				if (varpID == 0xFFFF) {
@@ -555,6 +558,8 @@ public class ObjectConfig extends ConfigExtensionBase {
 	public boolean blocksProjectile = true;
 	@OrderType(priority = 101)
 	public Map<Integer, Object> params = null;
+
+	public boolean setRandomizeAnimStart;
 
 	private static Map<Field, Integer> fieldPriorities;
 
