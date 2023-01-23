@@ -113,6 +113,20 @@ public class NPCConfig extends ConfigExtensionBase {
 			aBool2170 = false;
 		} else if (opcode == 111) {
 			aBool2190 = true;
+		} else if (opcode == 114) {
+			runAnimation = buffer.readUnsignedShort();
+		} else if (opcode == 115) {
+			runAnimation = buffer.readUnsignedShort();
+			runRotate180Animation = buffer.readUnsignedShort();
+			runRotateLeftAnimation = buffer.readUnsignedShort();
+			runRotateRightAnimation = buffer.readUnsignedShort();
+		} else if (opcode == 116) {
+			crawlAnimation = buffer.readUnsignedShort();
+		} else if (opcode == 117) {
+			crawlAnimation = buffer.readUnsignedShort();
+			crawlRotate180Animation = buffer.readUnsignedShort();
+			crawlRotateLeftAnimation = buffer.readUnsignedShort();
+			crawlRotateRightAnimation = buffer.readUnsignedShort();
 		} else if (opcode == 118) {
 			varbitIndex = buffer.readUnsignedShort();
 			if (varbitIndex == 65535) {
@@ -374,6 +388,14 @@ public class NPCConfig extends ConfigExtensionBase {
 	public boolean isClickable = true;
 	public int anInt2189 = -1;
 	public boolean aBool2190 = false;
+	public int runAnimation = -1;
+	public int runRotate180Animation = -1;
+	public int runRotateLeftAnimation = -1;
+	public int runRotateRightAnimation = -1;
+	public int crawlAnimation = -1;
+	public int crawlRotate180Animation = -1;
+	public int crawlRotateLeftAnimation = -1;
+	public int crawlRotateRightAnimation = -1;
 	public Map<Integer, Object> params = null;
 
 	private static Map<Field, Integer> fieldPriorities;
