@@ -11,6 +11,7 @@ import utility.StringUtilities;
  */
 public enum PluginType {
 
+	AREA,
 	INV,
 	FLO,
 	FLU,
