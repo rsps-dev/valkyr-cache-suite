@@ -16,55 +16,50 @@ public class StructConfig extends ConfigExtensionBase {
     private static Map<Field, Integer> fieldPriorities;
 
     @OrderType(priority = 1)
-    public int[] keyType;
+    public int id;
 
     @OrderType(priority = 2)
-    public String[] stringValues;
+    public Map<Integer, Object> params;
 
-    @OrderType(priority = 3)
-    public int[] intValues;
     @Override
     public void decode(int opcode, InputStream buffer) {
-        if (opcode == 249)
-        {
+        if (opcode == 249) {
             int length = buffer.readUnsignedByte();
-            keyType = new int[length];
-            stringValues = new String[length];
-            intValues = new int[length];
 
-            for (int i = 0; i < length; i++)
-            {
+            params = new HashMap<>(length);
+
+            for (int i = 0; i < length; i++) {
                 boolean isString = buffer.readUnsignedByte() == 1;
-                keyType[i] = buffer.read24BitInt();
+                int key = buffer.read24BitInt();
+                Object value;
 
-                if (isString)
-                {
-                    stringValues[i] = buffer.readString();
+                if (isString) {
+                    value = buffer.readString();
+                } else {
+                    value = buffer.readInt();
                 }
-                else
-                {
-                    intValues[i] = buffer.readInt();
-                }
+
+                params.put(key, value);
             }
         }
     }
 
     @Override
     public OutputStream encode(OutputStream buffer) {
-        System.out.println("This is not even called");
-        buffer.writeByte(249);
-        int length = keyType.length;
-        buffer.writeByte(length);
-        for (int i = 0; i < length; i++) {
-            buffer.writeByte(stringValues[i] != null ? 1 : 0);
-            buffer.write24BitInt(keyType[i]);
-            if (stringValues[i] != null) {
-                buffer.writeString(stringValues[i]);
-            } else {
-                buffer.writeInt(intValues[i]);
+        if (Objects.nonNull(params)) {
+            buffer.writeByte(249);
+            buffer.writeByte(params.size());
+            for (int key : params.keySet()) {
+                Object value = params.get(key);
+                buffer.writeByte(value instanceof String ? 1 : 0);
+                buffer.write24BitInt(key);
+                if (value instanceof String) {
+                    buffer.writeString((String) value);
+                } else {
+                    buffer.writeInt((Integer) value);
+                }
             }
         }
-        buffer.writeByte(0);
         return buffer;
     }
 
@@ -86,4 +81,5 @@ public class StructConfig extends ConfigExtensionBase {
         });
         return fieldPriorities;
     }
+
 }
