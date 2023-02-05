@@ -7,43 +7,27 @@ import store.utilities.ReflectionUtils;
 import suite.annotation.OrderType;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class InvConfig extends ConfigExtensionBase {
 
     private static Map<Field, Integer> fieldPriorities;
 
     @OrderType(priority = 1)
-    public int[] getId;
-
-    @OrderType(priority = 2)
-    public int getSize;
+    public int size;
 
     @Override
     public void decode(int opcode, InputStream buffer) {
-        InventoryDefinition def = new InventoryDefinition();
-        def.id = id;
-        InputStream is = new InputStream();
-        while (true)
+        if (opcode == 2)
         {
-            int getId = buffer.readUnsignedByte();
-            if (opcode == 0)
-            {
-                break;
-            }
-
-            if (opcode == 2)
-            {
-                getSize = buffer.readUnsignedShort();
-            }
+            size = buffer.readUnsignedShort();
         }
     }
 
     @Override
     public OutputStream encode(OutputStream buffer) {
-        buffer.writeByte(0);
+        buffer.writeByte(2);
+        buffer.writeShort(size);
         return buffer;
     }
 
