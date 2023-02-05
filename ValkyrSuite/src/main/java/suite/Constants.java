@@ -6,6 +6,7 @@ import persistable.Persistable;
 
 public final class Constants {
 
+	public static boolean LEGACY_MODE = false;
 	public static final String FAVICON;
 	public static final String DEFAULT_SAVE_DIR;
 	public static final String WINDOW_NAME;

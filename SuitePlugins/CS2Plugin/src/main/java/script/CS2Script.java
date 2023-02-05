@@ -1,12 +1,15 @@
 package script;
 
 import com.google.common.collect.Maps;
+import javafx.util.Pair;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import store.io.impl.InputStream;
 import store.io.impl.OutputStream;
 import store.plugin.extension.ConfigExtensionBase;
+import store.utilities.ReflectionUtils;
+import suite.annotation.OrderType;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -18,13 +21,24 @@ import static script.CS2Opcode.*;
 @Getter
 public class CS2Script extends ConfigExtensionBase {
 
+    private static Map<Field, Integer> fieldPriorities;
+
+    @OrderType(priority = 1)
     public int localIntCount;
+    @OrderType(priority = 2)
     public String[] stringOrphands;
+    @OrderType(priority = 3)
     public int[] instructions;
+    @OrderType(priority = 4)
     public int localStringCount;
+    @OrderType(priority = 5)
     public int intStackCount;
+    @OrderType(priority = 6)
     public int stringStackCount;
+    @OrderType(priority = 7)
     public int[] intOrphands;
+
+    @OrderType(priority = 8)
     public Map<Integer, Integer>[] switches;
 
     @Override
@@ -76,7 +90,7 @@ public class CS2Script extends ConfigExtensionBase {
             {
                 stringOrphands[index] = buffer.readString();
             }
-            else if(opcode < 100 && opcode != RETURN && opcode != POP_INT && opcode != CS2Opcode.POP_STRING)
+            else if(opcode < 100 && opcode != CS2Opcode.RETURN && opcode != CS2Opcode.POP_INT && opcode != CS2Opcode.POP_STRING)
             {
                 intOrphands[index] = buffer.readInt();
             }
@@ -105,7 +119,7 @@ public class CS2Script extends ConfigExtensionBase {
             {
                 buffer.writeString(stringOperands[i]);
             }
-            else if (opcode < 100 && opcode != RETURN && opcode != POP_INT && opcode != POP_STRING)
+            else if (opcode < 100 && opcode != CS2Opcode.RETURN && opcode != CS2Opcode.POP_INT && opcode != CS2Opcode.POP_STRING)
             {
                 buffer.writeInt(intOperands[i]);
             }
@@ -150,7 +164,16 @@ public class CS2Script extends ConfigExtensionBase {
 
     @Override
     public Map<Field, Integer> getPriority() {
-        return null;
+        if (fieldPriorities != null)
+            return fieldPriorities;
+        Map<String, Pair<Field, Object>> values = ReflectionUtils.getValues(this);
+        fieldPriorities = Maps.newHashMap();
+        values.values().stream().forEach(pair -> {
+            Field field = pair.getKey();
+            int priority = field.isAnnotationPresent(OrderType.class) ? field.getAnnotation(OrderType.class).priority() : 1000;
+            fieldPriorities.put(field, priority);
+        });
+        return fieldPriorities;
     }
 
 }

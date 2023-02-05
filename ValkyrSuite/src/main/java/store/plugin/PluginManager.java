@@ -126,6 +126,12 @@ public class PluginManager {
 
 					}
 
+					final PluginType type = plugin.getDescriptor().type();
+
+					if (Constants.LEGACY_MODE && type != PluginType.ITEM && type != PluginType.MESH) {
+						continue;
+					}
+
 					plugin.setFxmlFiles(fxmlFiles);
 					plugins.add(plugin);
 

@@ -12,6 +12,8 @@ import javafx.scene.layout.AnchorPane;
 import misc.CustomTab;
 import misc.RsMesh;
 import store.CacheLibrary;
+import store.cache.index.Index;
+import store.cache.index.archive.Archive;
 import store.codec.model.Mesh;
 import store.io.impl.InputStream;
 import store.io.impl.OutputStream;
@@ -121,9 +123,14 @@ public class ConfigEditor extends FXController {
                 int id = Dialogues.integerInput(null, "Enter an id...", PluginManager.get().getLoaderForType(getInfo().getType()).getDefinitions().size() + 1);
                 ConfigExtensionBase blank_def = PluginManager.get().getConfigForType(getInfo().getType()).getClass().newInstance();
                 blank_def.id = id;
+                blank_def.copy(editing);
+                blank_def.onCreate();
                 this.editing = blank_def;
-                save();
+                if (!getInfo().is317()) {
+                    save();
+                }
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException e) {
+                e.printStackTrace();
                 InformationDialogue.create("Error", "An error has occured.", Alert.AlertType.ERROR,
                         "Unable to create a new config.", "",
                         "Please notify ReverendDread about this error, and a way to reproduce it.");
@@ -183,10 +190,15 @@ public class ConfigEditor extends FXController {
                 Main.getSelection().createTask("Replacing config...", true, TaskUtil.create(() -> {
                     if (id > -1) {
                         ConfigExtensionBase replacing = definitions.get(id);
-                        OutputStream buffer = replacing.encode(new OutputStream());
-                        CacheLibrary.get().getIndex(getInfo().getIndex()).getArchive(getInfo().getArchive()).addFile(selected.id, buffer.flip());
-                        CacheLibrary.get().getIndex(getInfo().getIndex()).update(Selection.progressListener);
-                        PluginManager.get().getLoaderForType(getInfo().getType()).reload();
+                        if (getInfo().is317()) {
+                            selected.copy(replacing);
+                            CacheLibrary.get().getIndex(getInfo().getIndex()).update(Selection.progressListener);
+                        } else {
+                            OutputStream buffer = replacing.encode(new OutputStream());
+                            CacheLibrary.get().getIndex(getInfo().getIndex()).getArchive(getInfo().getArchive()).addFile(selected.id, buffer.flip());
+                            CacheLibrary.get().getIndex(getInfo().getIndex()).update(Selection.progressListener);
+                            PluginManager.get().getLoaderForType(getInfo().getType()).reload();
+                        }
                         Platform.runLater(() -> initialize(tab, false, id));
                         return true;
                     }
@@ -231,6 +243,18 @@ public class ConfigEditor extends FXController {
         context_menu.getItems().setAll(create, importMenu, exportMenu, replaceFrom);
     }
 
+    private void pack317Config() {
+        final OutputStream[] streams = editing.encodeConfig317(getInfo().getFileName());
+
+        if (streams != null) {
+            CacheLibrary.get().getIndex(0).getArchive(2).addFile(getInfo().getFileName() + ".dat", streams[0].buffer);
+
+            if (streams[1] != null) {
+                CacheLibrary.get().getIndex(0).getArchive(2).addFile(getInfo().getFileName() + ".idx", streams[1].buffer);
+            }
+        }
+    }
+
 
     @Override
     public void save() {
@@ -251,8 +275,12 @@ public class ConfigEditor extends FXController {
                                     }
                                 }
                             });
-                            OutputStream encoded = editing.encode(new OutputStream());
-                            CacheLibrary.get().getIndex(getInfo().getIndex()).getArchive(getInfo().getArchive()).addFile(editing.id, encoded.flip());
+                            if (getInfo().is317()) {
+                                pack317Config();
+                            } else {
+                                OutputStream encoded = editing.encode(new OutputStream());
+                                CacheLibrary.get().getIndex(getInfo().getIndex()).getArchive(getInfo().getArchive()).addFile(editing.id, encoded.flip());
+                            }
                             CacheLibrary.get().getIndex(getInfo().getIndex()).update(Selection.progressListener);
                             PluginManager.get().getLoaderForType(getInfo().getType()).reload();
                             Platform.runLater(() -> initialize(tab, true, editing.id));
@@ -271,6 +299,40 @@ public class ConfigEditor extends FXController {
         }
     }
 
+    @Override
+    public void update() {
+        try {
+            if (Objects.nonNull(editing)) {
+                Task<Boolean> saving = new Task<Boolean>() {
+
+                    @Override
+                    protected Boolean call() throws Exception {
+                        try {
+                            table.getItems().stream().forEach(item -> {
+                                if (item.getDisplayNode() == null) {
+                                    return;
+                                }
+                                for (Field field : editing.getClass().getFields()) {
+                                    if (field.getName().equalsIgnoreCase(item.getName().get())) {
+                                        ReflectionUtils.setValue(editing, field, item.getDisplayNode().get());
+                                    }
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return true;
+                    }
+
+                };
+                Main.getSelection().createTask("Updating config " + editing.id + "...", true, saving);
+            }
+        } catch (Exception e) {
+            InformationDialogue.create("Error", "An error has occured.", Alert.AlertType.ERROR,
+                    "Unable to update config, please your check spelling.", "", StringUtilities.getStackTrace(e));
+        }
+    }
+
     /**
      * Acts as a default item config editor.
      * @return
@@ -278,6 +340,14 @@ public class ConfigEditor extends FXController {
     @Override
     public ConfigEditorInfo getInfo() {
         return ConfigEditorInfo.builder().index(2).archive(10).type(PluginType.ITEM).build();
+    }
+
+    public byte[] getConfigFile317(String name) {
+        CacheLibrary cache = CacheLibrary.get();
+        Index index = cache.getIndex(0);
+        Archive archive = index.getArchive(2);
+        store.cache.index.archive.file.File file = archive.getFile(name);
+        return file.getData();
     }
 
 }

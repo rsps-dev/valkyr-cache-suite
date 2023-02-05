@@ -2114,10 +2114,10 @@ public class Mesh extends ConfigExtensionBase {
 		footer_buffer.writeShort(face_indices_buffer.getDataTrimmed().length);
 
 		if (hasExtendedVertexSkins) {
-			footer_buffer.writeShort(vertex_skins_buffer.size());
+			footer_buffer.writeShort(vertex_skins_buffer.length());
 		}
 		if (hasExtendedFaceSkins) {
-			footer_buffer.writeShort(face_skins_buffer.size());
+			footer_buffer.writeShort(face_skins_buffer.length());
 		}
 
 		OutputStream[] buffers = new OutputStream[] { vertex_flags_buffer, face_index_types_buffer, face_priorities_buffer, face_skins_buffer, face_types_buffer, vertex_skins_buffer, face_alphas_buffer, face_indices_buffer, face_colors_buffer, simple_textures_buffer, vertex_x_buffer, vertex_y_buffer, vertex_z_buffer, complex_textures_buffer, texture_scale_buffer, texture_rotation_buffer,
@@ -2497,16 +2497,16 @@ public class Mesh extends ConfigExtensionBase {
 		footer_buffer.writeBoolean(hasFaceSkins);
 		footer_buffer.writeBoolean(hasFaceTextures);
 		footer_buffer.writeBoolean(hasVertexSkins);
-		footer_buffer.writeShort(vertex_x_buffer.size());
-		footer_buffer.writeShort(vertex_y_buffer.size());
-		footer_buffer.writeShort(vertex_z_buffer.size());
-		footer_buffer.writeShort(face_indices_buffer.size());
-		footer_buffer.writeShort(face_textures_buffer.size());
+		footer_buffer.writeShort(vertex_x_buffer.length());
+		footer_buffer.writeShort(vertex_y_buffer.length());
+		footer_buffer.writeShort(vertex_z_buffer.length());
+		footer_buffer.writeShort(face_indices_buffer.length());
+		footer_buffer.writeShort(face_textures_buffer.length());
 		if (hasExtendedVertexSkins) {
-			footer_buffer.writeShort(vertex_skins_buffer.size());
+			footer_buffer.writeShort(vertex_skins_buffer.length());
 		}
 		if (hasExtendedFaceSkins) {
-			footer_buffer.writeShort(face_skins_buffer.size());
+			footer_buffer.writeShort(face_skins_buffer.length());
 		}
 		for (int i = 0; i < buffers.length; i++) {
 			OutputStream buffer = buffers[i];

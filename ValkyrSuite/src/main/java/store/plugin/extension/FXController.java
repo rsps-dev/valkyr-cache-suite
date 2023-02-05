@@ -19,6 +19,9 @@ public abstract class FXController{
 	
 	public abstract void save();
 
+	public void update() {
+
+	}
 	@Nullable
 	public abstract ConfigEditorInfo getInfo();
 

@@ -101,6 +101,9 @@ public class Selection {
 				if (event.isControlDown() && event.getCode() == KeyCode.S) {
 					save();
 				}
+				if (event.isControlDown() && event.getCode() == KeyCode.D) {
+					update();
+				}
 			});
 
 		} catch (Exception e) {
@@ -190,6 +193,15 @@ public class Selection {
 		}
 		CustomTab tab = (CustomTab) tabs.getSelectionModel().getSelectedItem();
 		tab.getController().save();
+	}
+
+	public void update() {
+		if (tabs.getTabs().isEmpty()) {
+			Dialogues.alert(AlertType.ERROR, "An error has occured.", null, "Please select an editor before attempting to save.", true);
+			return;
+		}
+		CustomTab tab = (CustomTab) tabs.getSelectionModel().getSelectedItem();
+		tab.getController().update();
 	}
 
 	/**

@@ -15,6 +15,8 @@ public class ConfigEditorInfo {
     private int index;
     private int archive = 0;
     private int file = 0;
+    private boolean is317;
+    private String fileName;
 
     private PluginType type;
 

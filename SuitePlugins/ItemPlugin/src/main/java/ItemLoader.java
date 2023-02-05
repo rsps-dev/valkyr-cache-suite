@@ -1,6 +1,7 @@
 import javafx.scene.control.Alert;
 import store.CacheLibrary;
 import store.cache.index.Index;
+import store.cache.index.archive.Archive;
 import store.cache.index.archive.file.File;
 import store.io.impl.InputStream;
 import store.plugin.extension.LoaderExtensionBase;
@@ -17,11 +18,45 @@ import suite.dialogue.Dialogues;
  */
 public class ItemLoader extends LoaderExtensionBase {
 
+	public static int streamIndices[];
 	@Override
 	public boolean load() {
 		try {
-			Index index = CacheLibrary.get().getIndex(getIndex());
+			CacheLibrary cache = CacheLibrary.get();
+
+			if (cache.is317()) {
+				InputStream stream = new InputStream(getConfigFile317("obj.dat"));
+				InputStream streamIdx = new InputStream(getConfigFile317("obj.idx"));
+
+				int totalItems = streamIdx.readUnsignedShort();
+
+				streamIndices = new int[totalItems];
+
+				int i = 2;
+
+				for (int j = 0; j < totalItems; j++) {
+					streamIndices[j] = i;
+
+					i += streamIdx.readUnsignedShort();
+				}
+
+				for (int id = 0; id < totalItems; id++) {
+					stream.position = streamIndices[id];
+					ItemConfig definition = new ItemConfig();
+					definition.id = id;
+					readConfig(stream, definition);
+					definitions.put(id, definition);
+					Selection.progressListener.pluginNotify("(" + id + "/" + streamIndices.length + ")");
+				}
+
+				return true;
+			}
+
+			Index index = cache.getIndex(getIndex());
+			Archive archive = index.getArchive(getArchive());
+
 			int[] fileIds = index.getArchive(getArchive()).getFileIds();
+
 			for (int id : fileIds) {
 				File file = index.getArchive(getArchive()).getFile(id);
 				if (file == null || file.getData() == null)
@@ -48,16 +83,14 @@ public class ItemLoader extends LoaderExtensionBase {
 
 	@Override
 	public int getArchive() {
-		// TODO Auto-generated method stub
-		return 10;
+		return CacheLibrary.get().is317() ? 2 : 10;
 	}
 
 	@Override
 	public int getIndex() {
-		// TODO Auto-generated method stub
-		return 2;
+		return CacheLibrary.get().is317() ? 0 : 2;
 	}
-	
+
 	private ItemConfig toNote(ItemConfig config) {
 		if (config.notedID != -1 && config.notedTemplate != -1) {
 			ItemConfig original = (ItemConfig) getDefinitions().get(config.notedID);
