@@ -13,7 +13,7 @@ public final class Constants {
 	public static int REVISION;
 	public static Persistable settings;
 
-	public static boolean localPlugins;
+	public static boolean localPlugins = true;
 
 	static {
 		WINDOW_NAME = "Valkyr Cache Suite";
