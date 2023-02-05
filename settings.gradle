@@ -3,6 +3,7 @@ rootProject.name = 'ValkyrCacheSuite'
 include ':SuitePlugins'
 include ':ValkyrSuite'
 
+include 'SuitePlugins:BitPlugin'
 include 'SuitePlugins:ItemPlugin'
 include 'SuitePlugins:NPCPlugin'
 include 'SuitePlugins:ObjectPlugin'

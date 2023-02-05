@@ -12,7 +12,7 @@ import utility.StringUtilities;
 public enum PluginType {
 
 	STRUCT,
-
+	BIT,
 	AREA,
 	INV,
 	FLO,
