@@ -40,7 +40,6 @@ import suite.Main;
 import suite.controller.Selection;
 import suite.dialogue.Dialogues;
 import suite.dialogue.InformationDialogue;
-import sun.misc.Cache;
 import utility.ConfigEditorInfo;
 import utility.StringUtilities;
 import utility.TaskUtil;
