@@ -36,14 +36,16 @@ public class NPCConfig extends ConfigExtensionBase {
 		} else if (opcode == 14) {
 			walkAnimation = buffer.readUnsignedShort();
 		} else if (opcode == 15) {
-			anInt2165 = buffer.readUnsignedShort();
+			turnLeftSequence = buffer.readUnsignedShort();
 		} else if (opcode == 16) {
-			anInt2189 = buffer.readUnsignedShort();
+			turnRightSequence = buffer.readUnsignedShort();
 		} else if (opcode == 17) {
 			walkAnimation = buffer.readUnsignedShort();
 			rotate180Animation = buffer.readUnsignedShort();
 			rotate90RightAnimation = buffer.readUnsignedShort();
 			rotate90LeftAnimation = buffer.readUnsignedShort();
+		} else if (opcode == 18) {
+			buffer.readUnsignedShort(); // Not used yet
 		} else if (opcode >= 30 && opcode < 35) {
 			options[opcode - 30] = buffer.readString();
 			if (options[opcode - 30].equalsIgnoreCase("Hidden")) {
@@ -198,14 +200,14 @@ public class NPCConfig extends ConfigExtensionBase {
 			buffer.writeShort(walkAnimation);
 		}
 		
-		if (anInt2165 > -1) {
+		if (turnLeftSequence > -1) {
 			buffer.writeByte(15);
-			buffer.writeShort(anInt2165);
+			buffer.writeShort(turnLeftSequence);
 		}
 		
-		if (anInt2189 > -1) {
+		if (turnRightSequence > -1) {
 			buffer.writeByte(16);
-			buffer.writeShort(anInt2189);
+			buffer.writeShort(turnRightSequence);
 		}
 		
 		if (walkAnimation > -1 && rotate180Animation > -1 && rotate90LeftAnimation > -1 && rotate90RightAnimation > -1) {
@@ -358,7 +360,7 @@ public class NPCConfig extends ConfigExtensionBase {
 	public int[] models;
 	public int[] models_2;
 	public int stanceAnimation = -1;
-	public int anInt2165 = -1;
+	public int turnLeftSequence = -1;
 	public int tileSpacesOccupied = 1;
 	public int walkAnimation = -1;
 	@OrderType(priority = 8)
@@ -386,7 +388,7 @@ public class NPCConfig extends ConfigExtensionBase {
 	public int varpIndex = -1;
 	@OrderType(priority = 4)
 	public boolean isClickable = true;
-	public int anInt2189 = -1;
+	public int turnRightSequence = -1;
 	public boolean aBool2190 = false;
 	public int runAnimation = -1;
 	public int runRotate180Animation = -1;
