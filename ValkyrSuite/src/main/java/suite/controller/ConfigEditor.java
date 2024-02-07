@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import misc.CustomTab;
 import misc.RsMesh;
 import store.CacheLibrary;
@@ -141,28 +142,31 @@ public class ConfigEditor extends FXController {
         MenuItem importDat = new MenuItem(".dat");
         importDat.setOnAction(event -> {
             try {
-                File file = RetentionFileChooser.showOpenDialog("Select a config to import.", Main.getSelection().stage, FilterMode.DAT);
+                List<File> files = RetentionFileChooser.showOpenMultipleDialog("Select .dat files to import", Main.getSelection().stage, new FileChooser.ExtensionFilter("DAT Files", "*.dat"));
                 Main.getSelection().createTask("Importing...", true, TaskUtil.create(() -> {
-                    byte[] data = Files.readAllBytes(file.toPath());
-                    ConfigExtensionBase newItem = PluginManager.get().getConfigForType(getInfo().getType()).getClass().newInstance();
-                    newItem.id = StringUtilities.stripId(file.getName());
-                    InputStream buffer = new InputStream(data);
-                    for (;;) {
-                        int opcode = buffer.readUnsignedByte();
-                        if (opcode == 0)
-                            break;
-                        newItem.decode(opcode, buffer);
+                    for (File file : files) {
+                        byte[] data = Files.readAllBytes(file.toPath());
+                        ConfigExtensionBase newItem = PluginManager.get().getConfigForType(getInfo().getType()).getClass().newInstance();
+                        newItem.id = StringUtilities.stripId(file.getName());
+                        InputStream buffer = new InputStream(data);
+                        for (;;) {
+                            int opcode = buffer.readUnsignedByte();
+                            if (opcode == 0)
+                                break;
+                            newItem.decode(opcode, buffer);
+                        }
+                        CacheLibrary.get().getIndex(getInfo().getIndex()).getArchive(getInfo().getArchive()).addFile(newItem.id, data);
+                        CacheLibrary.get().getIndex(getInfo().getIndex()).update(Selection.progressListener);
+                        PluginManager.get().getLoaderForType(getInfo().getType()).reload();
+                        Platform.runLater(() -> initialize(tab, false, newItem.id));
                     }
-                    CacheLibrary.get().getIndex(getInfo().getIndex()).getArchive(getInfo().getArchive()).addFile(newItem.id, data);
-                    CacheLibrary.get().getIndex(getInfo().getIndex()).update(Selection.progressListener);
-                    PluginManager.get().getLoaderForType(getInfo().getType()).reload();
-                    Platform.runLater(() -> initialize(tab, false, newItem.id));
                     return true;
                 }));
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
+
         importMenu.getItems().addAll(importDat);
 
         Menu exportMenu = new Menu("Export");
