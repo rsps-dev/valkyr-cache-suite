@@ -115,33 +115,17 @@ public class NamedValueObject {
 				ObservableList<String> items = FXCollections.observableArrayList(Ints.asList((int[]) item).stream().map(String::valueOf).collect(Collectors.toList()));
 				ComboBox<String> comboBox = new ComboBox<String>(items);
 				comboBox.getEditor().setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), 0, integerFilter));
-				comboBox.setEditable(true);
+				comboBox.setEditable(false);
 				comboBox.getSelectionModel().select(0);
 				comboBox.setValue(items.isEmpty() ? "" : items.get(0));
 
-				Button add = new Button("Add");
-				add.setOnAction((event) -> {
-					String text = comboBox.getEditor().getText();
-					comboBox.getItems().add(text.isEmpty() ? "0" : text);
-					comboBox.getSelectionModel().selectLast();
-				});
-				
-				Button remove = new Button("Remove");
-				remove.setOnAction((event) -> {
-					int index = comboBox.getSelectionModel().getSelectedIndex();
-					if (index != -1)
-						comboBox.getItems().remove(index);
-				});
-				
-				Button set = new Button("Set");
-				set.setOnAction((event) -> {
-					String newValue = comboBox.getEditor().getText();
-					System.out.println("index: " + comboBox.getSelectionModel().getSelectedIndex());
-					System.out.println("new value: " + newValue);
-					comboBox.getItems().set(comboBox.getSelectionModel().getSelectedIndex(), newValue);
+				// Create the "Edit" button
+				Button edit = new Button("Edit");
+				edit.setOnAction(event -> {
+					ArrayEditorDialog.showArrayEditor(comboBox);
 				});
 
-				hbox.getChildren().setAll(comboBox, add, remove, set);
+				hbox.getChildren().setAll(comboBox, edit);
 
 				if (field.getName().equalsIgnoreCase("models")) {
 					Button dump = new Button("Dump models");
@@ -180,27 +164,15 @@ public class NamedValueObject {
 				ObservableList<String> items = FXCollections.observableArrayList(Shorts.asList((short[]) item).stream().map(String::valueOf).collect(Collectors.toList()));
 				ComboBox<String> comboBox = new ComboBox<>(items);
 				comboBox.getEditor().setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), 0, integerFilter));
-				comboBox.setEditable(true);
+				comboBox.setEditable(false);
 				comboBox.getSelectionModel().select(0);
 				comboBox.setValue(items.isEmpty() ? "" : items.get(0));
-				Button add = new Button("Add");
-				add.setOnAction((event) -> {
-					String text = comboBox.getEditor().getText();
-					comboBox.getItems().add(text.isEmpty() ? "null" : text);
-					comboBox.getSelectionModel().selectLast();
+				// Create the "Edit" button
+				Button edit = new Button("Edit");
+				edit.setOnAction(event -> {
+					ArrayEditorDialog.showArrayEditor(comboBox);
 				});
-				Button remove = new Button("Remove");
-				remove.setOnAction((event) -> {
-					int index = comboBox.getSelectionModel().getSelectedIndex();
-					if (index != -1)
-						comboBox.getItems().remove(index);
-				});
-				Button set = new Button("Set");
-				set.setOnAction((event) -> {
-					String newValue = comboBox.getEditor().getText();
-					comboBox.getItems().set(comboBox.getSelectionModel().getSelectedIndex(), newValue);
-				});
-				hbox.getChildren().setAll(comboBox, add, remove, set);
+				hbox.getChildren().setAll(comboBox, edit);
 				graphic = (hbox);
 			} else if (field.getType().isAssignableFrom(HashMap.class)) {
 				HBox hbox = new HBox();
