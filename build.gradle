@@ -67,7 +67,6 @@ subprojects {
 	javafx {
 		version = "17"
 		modules = [ 'javafx.base', 'javafx.fxml', 'javafx.graphics', 'javafx.controls', 'javafx.media', 'javafx.swing']
-		platform = 'macos-aarch64'
 	}
 }
 
