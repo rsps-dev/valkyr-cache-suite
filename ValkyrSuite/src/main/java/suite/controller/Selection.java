@@ -235,17 +235,20 @@ public class Selection {
 		DirectoryChooser dir_chooser = new DirectoryChooser();
 		dir_chooser.setTitle("Locate Cache Directory..");
 		Stage stage = Main.getPrimaryStage();
-		File default_dir = new File(System.getProperty("user.home") + "\\Desktop\\");
+		// Use File.separator for cross-platform compatibility
+		File default_dir = new File(System.getProperty("user.home") + File.separator + "Desktop" + File.separator);
 		dir_chooser.setInitialDirectory(default_dir);
 		File directory = dir_chooser.showDialog(stage);
 		if (directory != null) {
-			Constants.settings.cacheDir = directory.toString() + "\\";
+			// Again, use File.separator instead of hardcoding the separator
+			Constants.settings.cacheDir = directory.toString() + File.separator;
 			Constants.settings.save();
 			performStartup();
 			return;
 		}
 		Dialogues.alert(AlertType.ERROR, "Error", null, "Failed to locate cache directory.", true);
 	}
+
 
 	/**
 	 * Safely exits the program.

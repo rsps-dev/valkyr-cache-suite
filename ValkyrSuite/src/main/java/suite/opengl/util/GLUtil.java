@@ -47,14 +47,14 @@ public class GLUtil {
 //	        glShaderSource(vertShader, vertSource);
 //	        glShaderSource(fragShader, fragSource);
 //
-//	        glCompileShader(vertShader);
-//	        glCompileShader(fragShader);
+//	        glimplementationShader(vertShader);
+//	        glimplementationShader(fragShader);
 //
-//	        if (glGetShaderi(vertShader, GL_COMPILE_STATUS) != GL_TRUE) {
+//	        if (glGetShaderi(vertShader, GL_implementation_STATUS) != GL_TRUE) {
 //	            throw new IllegalStateException();
 //	        }
 //
-//	        if (glGetShaderi(fragShader, GL_COMPILE_STATUS) != GL_TRUE) {
+//	        if (glGetShaderi(fragShader, GL_implementation_STATUS) != GL_TRUE) {
 //	            throw new IllegalStateException();
 //	        }
 //

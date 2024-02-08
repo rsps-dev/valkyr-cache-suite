@@ -8,7 +8,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import misc.CustomTab;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.TrueTypeFont;
 import store.codec.model.Mesh;
 import suite.opengl.texture.Texture;
 import suite.opengl.util.ColorUtilities;
@@ -43,7 +42,7 @@ public class MeshWrapper extends OpenGLWrapper<Mesh> {
     @Getter @Setter private boolean showPriorities;
 
     //Used for font rendering
-    private TrueTypeFont font;
+    //private TrueTypeFont font;
     private Font awtFont;
 
     /**
@@ -54,7 +53,7 @@ public class MeshWrapper extends OpenGLWrapper<Mesh> {
     public MeshWrapper(CustomTab parent, ImageView view) {
         super(view, parent);
         awtFont = new Font("Arial", Font.PLAIN, 4);
-        font = new TrueTypeFont(awtFont, true);
+        //font = new TrueTypeFont(awtFont, true);
     }
 
     @Override
@@ -222,9 +221,9 @@ public class MeshWrapper extends OpenGLWrapper<Mesh> {
 
             if (showWeights) {
                 glDisable(GL_DEPTH_TEST); //have to disable before drawing txt
-                font.drawString(verticesX[faceA] / MODEL_SCALE, verticesY[faceA] / MODEL_SCALE, "nigger 1");
-                font.drawString(verticesX[faceB] / MODEL_SCALE, verticesY[faceB] / MODEL_SCALE, "nigger 2");
-                font.drawString(verticesX[faceC] / MODEL_SCALE, verticesY[faceC] / MODEL_SCALE, "nigger 3");
+                //font.drawString(verticesX[faceA] / MODEL_SCALE, verticesY[faceA] / MODEL_SCALE, "nigger 1");
+                //font.drawString(verticesX[faceB] / MODEL_SCALE, verticesY[faceB] / MODEL_SCALE, "nigger 2");
+                //font.drawString(verticesX[faceC] / MODEL_SCALE, verticesY[faceC] / MODEL_SCALE, "nigger 3");
                 glEnable(GL_DEPTH_TEST);
             }
 

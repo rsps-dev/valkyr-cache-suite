@@ -24,14 +24,21 @@ application {
 }
 
 jar {
-	archiveName = "suite-base.jar"
-	manifest {
-		attributes(
-			'Main-Class': 'suite.Main',
-		)
-	}
-	from configurations.compile.collect { it.isDirectory() ? it : zipTree(it).matching{ exclude{it.name.contains('MANIFEST.MF') } } }
+    archiveFileName.set("suite-base.jar")
+    manifest {
+        attributes(
+                'Main-Class': 'suite.Main'
+        )
+    }
+    from {
+        configurations.runtimeClasspath.findAll { it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
+    }.exclude("META-INF/LICENSE.txt") // Exclude duplicate LICENSE.txt files
+
+    // Alternatively, set a duplicates strategy like this:
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
+
+
 
 run {
     systemProperty 'java.library.path', file( 'build/resources/main/native/windows' )

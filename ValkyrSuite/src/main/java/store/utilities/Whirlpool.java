@@ -1,4 +1,4 @@
-/* Whirlpool - Decompiled by JODE
+/* Whirlpool - Deimplementationd by JODE
  * Visit http://jode.sourceforge.net/
  */
 package store.utilities;
