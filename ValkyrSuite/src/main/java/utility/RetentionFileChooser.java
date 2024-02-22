@@ -4,7 +4,9 @@
 package utility;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javafx.beans.property.SimpleObjectProperty;
@@ -53,6 +55,16 @@ public class RetentionFileChooser {
 		}
 		return chosenFile;
 	}
+
+	public static List<File> showOpenMultipleDialog(String title, Window ownerWindow, FileChooser.ExtensionFilter... extensionFilters) {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle(title);
+		fileChooser.getExtensionFilters().addAll(extensionFilters);
+		List<File> selectedFiles = fileChooser.showOpenMultipleDialog(ownerWindow);
+		return selectedFiles != null ? selectedFiles : new ArrayList<>();
+	}
+
+
 	
 	public static File showOpenFolderDialog(Window ownerWindow, File initialDirectory) {
 		if(initialDirectory != null) {

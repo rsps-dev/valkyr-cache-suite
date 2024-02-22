@@ -107,7 +107,24 @@ public class StringUtilities {
 	}
 
 	public static int stripId(String name) {
-		return Integer.parseInt(name.substring(0, name.length() - ".dat".length()));
+		// Find the index of the first underscore
+		int underscoreIndex = name.indexOf('_');
+		if (underscoreIndex != -1) {
+			// Extract the numeric part from the beginning of the name until the underscore
+			String numericPart = name.substring(0, underscoreIndex);
+			// Parse the numeric part to an integer
+			return Integer.parseInt(numericPart);
+		} else {
+			// Find the index of the ".dat" extension
+			int extensionIndex = name.lastIndexOf(".dat");
+			if (extensionIndex == -1) {
+				throw new IllegalArgumentException("Invalid file name format: " + name);
+			}
+			// Extract the numeric part from the beginning of the name until the ".dat" extension
+			String numericPart = name.substring(0, extensionIndex);
+			// Parse the numeric part to an integer
+			return Integer.parseInt(numericPart);
+		}
 	}
 	
 	public static String getFormattedEnumName(String name) {
