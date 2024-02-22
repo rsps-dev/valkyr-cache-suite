@@ -13,6 +13,7 @@ public enum PluginType {
 
 	STRUCT,
 	BIT,
+	IDK,
 	AREA,
 	INV,
 	FLO,

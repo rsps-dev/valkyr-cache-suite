@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane prefHeight="600.0" prefWidth="1200.0" stylesheets="@modena_dark.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <SplitPane dividerPositions="0.18336673346693386" layoutY="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <items>
+                <AnchorPane>
+                    <children>
+                        <ListView fx:id="listView" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <TextField fx:id="search_bar" prefHeight="30.0" promptText="Search an id.." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                    </children>
+                </AnchorPane>
+                <AnchorPane>
+                    <children>
+                        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <children>
+                                <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                                    <tabs>
+                                        <Tab closable="false" text="General">
+                                            <content>
+                                                <AnchorPane>
+                                                    <children>
+                                                        <TableView fx:id="table" editable="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                            <columns>
+                                                                <TableColumn fx:id="name" maxWidth="-1.0" minWidth="495.0" prefWidth="-1.0" text="Name" />
+                                                                <TableColumn fx:id="value" maxWidth="-1.0" minWidth="495.0" prefWidth="-1.0" text="Value" />
+                                                            </columns>
+                                                        </TableView>
+                                                    </children>
+                                                </AnchorPane>
+                                            </content>
+                                        </Tab>
+                                        <Tab fx:id="meshViewTab" closable="false" text="Mesh View">
+                                            <content>
+                                                <AnchorPane fx:id="meshViewWrapper">
+                                                    <children>
+                                                        <ImageView fx:id="meshView" fitHeight="150.0" fitWidth="200.0" layoutX="378.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" StackPane.alignment="CENTER">
+                                                            <StackPane.margin>
+                                                                <Insets />
+                                                            </StackPane.margin>
+                                                        </ImageView>
+                                                        <Label fx:id="fps" layoutX="955.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" StackPane.alignment="TOP_RIGHT">
+                                                            <font>
+                                                                <Font size="10.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <ComboBox fx:id="meshes" prefWidth="150.0" visibleRowCount="12" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="30.0" StackPane.alignment="TOP_LEFT" />
+                                                    </children>
+                                                </AnchorPane>
+                                            </content>
+                                        </Tab>
+                                    </tabs>
+                                </TabPane>
+                            </children>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </children>
+</AnchorPane>

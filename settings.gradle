@@ -5,6 +5,7 @@ include ':ValkyrSuite'
 
 include 'SuitePlugins:BitPlugin'
 include 'SuitePlugins:ItemPlugin'
+include 'SuitePlugins:IDKPlugin'
 include 'SuitePlugins:NPCPlugin'
 include 'SuitePlugins:ObjectPlugin'
 include 'SuitePlugins:SequencePlugin'
