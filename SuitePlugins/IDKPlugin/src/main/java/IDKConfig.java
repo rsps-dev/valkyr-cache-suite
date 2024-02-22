@@ -29,6 +29,7 @@
         {
             -1, -1, -1, -1, -1
         };
+        @OrderType(priority = 8)
         public boolean nonSelectable = false;
 
         @Override
@@ -92,8 +93,8 @@
             {
                 buffer.writeShort(models[index]);
             }
-            buffer.writeByte(3);
-            buffer.writeByte(nonSelectable ? 1 : 0);
+            if (nonSelectable)
+                buffer.writeByte(3);
             buffer.writeByte(40);
             buffer.writeByte(recolorToFind.length);
             for (int index = 0; index < recolorToFind.length; index++)
@@ -116,6 +117,7 @@
                     buffer.writeShort(chatheadModels[index]);
                 }
             }
+            buffer.writeByte(0);
             return buffer;
         }
 
