@@ -127,7 +127,7 @@ public class MapPacker extends FXController {
 	@FXML
 	private Button regionIdSubmit;
 
-	private WorldMapRenderer renderer;
+//	private WorldMapRenderer renderer;
 
     private List<XTEA> xteaStore = Lists.newArrayList();
 
@@ -163,8 +163,8 @@ public class MapPacker extends FXController {
 //            }
 //        }
 
-		renderer = new WorldMapRenderer(canvas);
-		new Thread(renderer).start();
+//		renderer = new WorldMapRenderer(canvas);
+//		new Thread(renderer).start();
 
 		XTEASManager.get().setParserType(XTEASManager.XTEAParserType.POLAR);
 
@@ -295,9 +295,9 @@ public class MapPacker extends FXController {
 		regionIdSubmit.setOnAction((e) -> {
 			try {
 				int id = Integer.parseInt(regionIdField.getText());
-				renderer.setRegionId(id);
+//				renderer.setRegionId(id);
 			} catch (Exception ex) {
-				renderer.setRegionId(-1);
+//				renderer.setRegionId(-1);
 			}
 		});
 	}
