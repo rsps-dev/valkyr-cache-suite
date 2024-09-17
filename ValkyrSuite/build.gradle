@@ -9,8 +9,8 @@ buildscript {
     repositories {
         mavenLocal()
         mavenCentral()
-        jcenter()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url "https://repo.clojars.org" }
     }
     dependencies {
         classpath 'net.sf.proguard:proguard-gradle:6.0.2'
