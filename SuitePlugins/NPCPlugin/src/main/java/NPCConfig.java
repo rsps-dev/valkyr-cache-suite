@@ -112,9 +112,9 @@ public class NPCConfig extends ConfigExtensionBase {
 		} else if (opcode == 107) {
 			isClickable = false;
 		} else if (opcode == 109) {
-			aBool2170 = false;
+			rotationFlag = false;
 		} else if (opcode == 111) {
-			aBool2190 = true;
+			isFollower = true;
 		} else if (opcode == 114) {
 			runAnimation = buffer.readUnsignedShort();
 		} else if (opcode == 115) {
@@ -317,11 +317,11 @@ public class NPCConfig extends ConfigExtensionBase {
 			buffer.writeByte(107);
 		}
 		
-		if (!aBool2170) {
+		if (!rotationFlag) {
 			buffer.writeByte(109);
 		}
 		
-		if (aBool2190) {
+		if (isFollower) {
 			buffer.writeByte(111);
 		}
 		
@@ -366,7 +366,7 @@ public class NPCConfig extends ConfigExtensionBase {
 	@OrderType(priority = 8)
 	public int[] retextureToReplace;
 	public int rotate90RightAnimation = -1;
-	public boolean aBool2170 = true;
+	public boolean rotationFlag = true;
 	public int resizeX = 128;
 	public int contrast = 0;
 	public int rotate180Animation = -1;
@@ -389,7 +389,7 @@ public class NPCConfig extends ConfigExtensionBase {
 	@OrderType(priority = 4)
 	public boolean isClickable = true;
 	public int turnRightSequence = -1;
-	public boolean aBool2190 = false;
+	public boolean isFollower = false;
 	public int runAnimation = -1;
 	public int runRotate180Animation = -1;
 	public int runRotateLeftAnimation = -1;

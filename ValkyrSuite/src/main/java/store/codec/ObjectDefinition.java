@@ -8,10 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import store.CacheLibrary;
-import store.codec.util.Utils;
 import store.io.impl.InputStream;
 import store.io.impl.OutputStream;
-import suite.Main;
 
 @Getter @Setter @Slf4j
 public class ObjectDefinition implements AbstractDefinition, Cloneable {
@@ -68,9 +66,9 @@ public class ObjectDefinition implements AbstractDefinition, Cloneable {
 			} else if (opcode == 18) {
 				setBlocksProjectile(false);
 			} else if (opcode == 19) {
-				setAnInt2088(buffer.readUnsignedByte());
+				setWallOrDoor(buffer.readUnsignedByte());
 			} else if (opcode == 21) {
-				setAnInt2105(0);
+				setContouredGround(0);
 			} else if (opcode == 22) {
 				setNonFlatShading(false);
 			} else if (opcode == 23) {
@@ -83,7 +81,7 @@ public class ObjectDefinition implements AbstractDefinition, Cloneable {
 			} else if (opcode == 27) {
 				setInteractType(1);
 			} else if (opcode == 28) {
-				setAnInt2069(buffer.readUnsignedByte());
+				setDecorDisplacement(buffer.readUnsignedByte());
 			} else if (opcode == 29) {
 				setAmbient(buffer.readByte());
 			} else if (opcode == 39) {
@@ -121,7 +119,7 @@ public class ObjectDefinition implements AbstractDefinition, Cloneable {
 			} else if (opcode == 62) {
 				setRotated(true);
 			} else if (opcode == 64) {
-				setABool2097(false);
+				setShadow(false);
 			} else if (opcode == 65) {
 				setModelSizeX(buffer.readUnsignedShort());
 			} else if (opcode == 66) {
@@ -139,11 +137,11 @@ public class ObjectDefinition implements AbstractDefinition, Cloneable {
 			} else if (opcode == 72) {
 				setOffsetY(buffer.readShort());
 			} else if (opcode == 73) {
-				setABool2104(true);
+				setObstructsGround(true);
 			} else if (opcode == 74) {
 				setSolid(true);
 			} else if (opcode == 75) {
-				setAnInt2106(buffer.readUnsignedByte());
+				setSupportsItems(buffer.readUnsignedByte());
 			} else if (opcode == 77) {
 				int varpID = buffer.readUnsignedShort();
 				if (varpID == 0xFFFF) {
@@ -171,22 +169,22 @@ public class ObjectDefinition implements AbstractDefinition, Cloneable {
 	
 				setConfigChangeDest(configChangeDest);
 			} else if (opcode == 78) {
-				setAnInt2110(buffer.readUnsignedShort());
-				setAnInt2083(buffer.readUnsignedByte());
+				setAmbientSoundId(buffer.readUnsignedShort());
+				setAmbientSoundDistance(buffer.readUnsignedByte());
 			} else if (opcode == 79) {
-				setAnInt2112(buffer.readUnsignedShort());
-				setAnInt2113(buffer.readUnsignedShort());
-				setAnInt2083(buffer.readUnsignedByte());
+				setAmbientSoundChangeTicksMin(buffer.readUnsignedShort());
+				setAmbientSoundChangeTicksMax(buffer.readUnsignedShort());
+				setAmbientSoundDistance(buffer.readUnsignedByte());
 				int length = buffer.readUnsignedByte();
-				int[] anIntArray2084 = new int[length];
+				int[] ambientSoundIds = new int[length];
 	
 				for (int index = 0; index < length; ++index) {
-					anIntArray2084[index] = buffer.readUnsignedShort();
+					ambientSoundIds[index] = buffer.readUnsignedShort();
 				}
 	
-				setAnIntArray2084(anIntArray2084);
+				setAmbientSoundIds(ambientSoundIds);
 			} else if (opcode == 81) {
-				setAnInt2105(buffer.readUnsignedByte());
+				setContouredGround(buffer.readUnsignedByte());
 			} else if (opcode == 82) {
 				setMapAreaId(buffer.readUnsignedShort());
 			} else if (opcode == 92) {
@@ -286,9 +284,9 @@ public class ObjectDefinition implements AbstractDefinition, Cloneable {
 		}
 		
 		buffer.writeByte(19);
-		buffer.writeByte(anInt2088);
+		buffer.writeByte(wallOrDoor);
 		
-		if (anInt2069 == 0) {
+		if (decorDisplacement == 0) {
 			buffer.writeByte(21);
 		}
 		
@@ -308,7 +306,7 @@ public class ObjectDefinition implements AbstractDefinition, Cloneable {
 		}
 		
 		buffer.writeByte(28);
-		buffer.writeByte(anInt2069);
+		buffer.writeByte(decorDisplacement);
 		
 		buffer.writeByte(29);
 		buffer.writeByte(ambient);
@@ -349,7 +347,7 @@ public class ObjectDefinition implements AbstractDefinition, Cloneable {
 			buffer.writeByte(62);
 		}
 		
-		if (!aBool2097) {
+		if (!shadow) {
 			buffer.writeByte(64);
 		}
 		
@@ -374,7 +372,7 @@ public class ObjectDefinition implements AbstractDefinition, Cloneable {
 		buffer.writeByte(72);
 		buffer.writeShort(offsetY);
 		
-		if (aBool2104) {
+		if (obstructsGround) {
 			buffer.writeByte(73);
 		}
 		
@@ -383,7 +381,7 @@ public class ObjectDefinition implements AbstractDefinition, Cloneable {
 		}
 		
 		buffer.writeByte(75);
-		buffer.writeByte(anInt2106);
+		buffer.writeByte(supportsItems);
 		
 		if (configChangeDest != null) {	
 			int length = configChangeDest.length;
@@ -401,22 +399,22 @@ public class ObjectDefinition implements AbstractDefinition, Cloneable {
 		}
 		
 		buffer.writeByte(78);
-		buffer.writeShort(anInt2110);
-		buffer.writeByte(anInt2083);
+		buffer.writeShort(ambientSoundId);
+		buffer.writeByte(ambientSoundDistance);
 		
-		if (anIntArray2084 != null) {
+		if (ambientSoundIds != null) {
 			buffer.writeByte(79);
-			buffer.writeShort(anInt2112);
-			buffer.writeShort(anInt2113);
-			buffer.writeByte(anInt2083);
-			buffer.writeByte(anIntArray2084.length);
-			for (int index = 0; index < anIntArray2084.length; index++) {
-				buffer.writeShort(anIntArray2084[index]);
+			buffer.writeShort(ambientSoundChangeTicksMin);
+			buffer.writeShort(ambientSoundChangeTicksMax);
+			buffer.writeByte(ambientSoundDistance);
+			buffer.writeByte(ambientSoundIds.length);
+			for (int index = 0; index < ambientSoundIds.length; index++) {
+				buffer.writeShort(ambientSoundIds[index]);
 			}
 		}
 
 		buffer.writeByte(81);
-		buffer.writeByte(anInt2105);
+		buffer.writeByte(contouredGround);
 		
 		buffer.writeByte(82);
 		buffer.writeShort(mapAreaId);
@@ -461,7 +459,7 @@ public class ObjectDefinition implements AbstractDefinition, Cloneable {
 	
 	public int id;
 	public short[] retextureToFind;
-	public int anInt2069 = 16;
+	public int decorDisplacement = 16;
 	public boolean isSolid = false;
 	public String name = "null";
 	public int[] objectModels;
@@ -471,11 +469,11 @@ public class ObjectDefinition implements AbstractDefinition, Cloneable {
 	public short[] textureToReplace;
 	public int sizeX = 1;
 	public int sizeY = 1;
-	public int anInt2083 = 0;
-	public int[] anIntArray2084;
+	public int ambientSoundDistance = 0;
+	public int[] ambientSoundIds;
 	public int offsetX = 0;
 	public boolean nonFlatShading = false;
-	public int anInt2088 = -1;
+	public int wallOrDoor = -1;
 	public int animationID = -1;
 	public int varbitID = -1;
 	public int ambient = 0;
@@ -484,48 +482,48 @@ public class ObjectDefinition implements AbstractDefinition, Cloneable {
 	public int interactType = 2;
 	public int mapSceneID = -1;
 	public short[] recolorToReplace;
-	public boolean aBool2097 = true;
+	public boolean shadow = true;
 	public int modelSizeX = 128;
 	public int modelSizeHeight = 128;
 	public int modelSizeY = 128;
 	public int objectID;
 	public int offsetHeight = 0;
 	public int offsetY = 0;
-	public boolean aBool2104 = false;
-	public int anInt2105 = -1;
-	public int anInt2106 = -1;
+	public boolean obstructsGround = false;
+	public int contouredGround = -1;
+	public int supportsItems = -1;
 	public int[] configChangeDest;
 	public boolean isRotated = false;
 	public int varpID = -1;
-	public int anInt2110 = -1;
+	public int ambientSoundId = -1;
 	public boolean aBool2111 = false;
-	public int anInt2112 = 0;
-	public int anInt2113 = 0;
+	public int ambientSoundChangeTicksMin = 0;
+	public int ambientSoundChangeTicksMax = 0;
 	public boolean blocksProjectile = true;
 	public Map<Integer, Object> params = null;
 	
 	public void post()
 	{
-		if (getAnInt2088() == -1)
+		if (getWallOrDoor() == -1)
 		{
-			setAnInt2088(0);
+			setWallOrDoor(0);
 			if (getObjectModels() != null && (getObjectTypes() == null || getObjectTypes()[0] == 10))
 			{
-				setAnInt2088(1);
+				setWallOrDoor(1);
 			}
 
 			for (int var1 = 0; var1 < 5; ++var1)
 			{
 				if (getActions()[var1] != null)
 				{
-					setAnInt2088(1);
+					setWallOrDoor(1);
 				}
 			}
 		}
 
-		if (getAnInt2106() == -1)
+		if (getSupportsItems() == -1)
 		{
-			setAnInt2106(getInteractType() != 0 ? 1 : 0);
+			setSupportsItems(getInteractType() != 0 ? 1 : 0);
 		}
 	}
 
