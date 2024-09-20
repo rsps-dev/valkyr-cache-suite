@@ -66,9 +66,9 @@ public class ItemConfig extends ConfigExtensionBase {
 		} else if (opcode == 12) {
 			cost = buffer.readInt();
 		} else if (opcode == 13) {
-			maleModel0 = buffer.readUnsignedByte();
+			wearPos1 = buffer.readByte();
 		} else if (opcode == 14) {
-			maleModel1 = buffer.readUnsignedByte();
+			wearPos2 = buffer.readByte();
 		} else if (opcode == 16) {
 			members = true;
 		} else if (opcode == 23) {
@@ -82,7 +82,7 @@ public class ItemConfig extends ConfigExtensionBase {
 		} else if (opcode == 26) {
 			femaleModel1 = buffer.readUnsignedShort();
 		} else if (opcode == 27) {
-			maleModel2 = buffer.readUnsignedByte();
+			wearPos3 = buffer.readByte();
 		} else if (opcode >= 30 && opcode < 35) {
 			options[opcode - 30] = buffer.readString();
 			if (options[opcode - 30].equalsIgnoreCase("Hidden")) {
@@ -113,17 +113,17 @@ public class ItemConfig extends ConfigExtensionBase {
 		} 	else if (opcode == 75) {
 			weight = buffer.readShort();
 		} else if (opcode == 78) {
-			femaleModel2 = buffer.readUnsignedShort();
+			maleModel2 = buffer.readUnsignedShort();
 		} else if (opcode == 79) {
-			femaleHeadModel2 = buffer.readUnsignedShort();
+			femaleModel2 = buffer.readUnsignedShort();
 		} else if (opcode == 90) {
 			maleHeadModel = buffer.readUnsignedShort();
 		} else if (opcode == 91) {
-			field2169 = buffer.readUnsignedShort();
+			femaleHeadModel = buffer.readUnsignedShort();
 		} else if (opcode == 92) {
-			field2147 = buffer.readUnsignedShort();
+			maleHeadModel2 = buffer.readUnsignedShort();
 		} else if (opcode == 93) {
-			field2170 = buffer.readUnsignedShort();
+			femaleHeadModel2 = buffer.readUnsignedShort();
 		} else if (opcode == 94) {
 			category = buffer.readUnsignedShort();
 		} else if (opcode == 95) {
@@ -514,19 +514,19 @@ public class ItemConfig extends ConfigExtensionBase {
 			buffer.writeShort(femaleHeadModel2);
 		}
 		
-		if (field2169 > -1) {
+		if (femaleHeadModel > -1) {
 			buffer.writeByte(91);
-			buffer.writeShort(field2169);
+			buffer.writeShort(femaleHeadModel);
 		}
 		
-		if (field2147 > -1) {
+		if (maleHeadModel2 > -1) {
 			buffer.writeByte(92);
-			buffer.writeShort(field2147);
+			buffer.writeShort(maleHeadModel2);
 		}
 		
-		if (field2170 > -1) {
+		if (femaleHeadModel2 > -1) {
 			buffer.writeByte(93);
-			buffer.writeShort(field2170);
+			buffer.writeShort(femaleHeadModel2);
 		}
 		if (category != -1) {
 			buffer.writeByte(94);
@@ -729,13 +729,9 @@ public class ItemConfig extends ConfigExtensionBase {
 	public int placeholderTemplateId = -1;
 	public HashMap<Integer, Object> params = null;
 
-	public int wearPos1;
-	public int wearPos2;
-	public int wearPos3;
-
-	public int field2169;
-	public int field2147;
-	public int field2170;
+	public int wearPos1 = -1;
+	public int wearPos2 = -1;
+	public int wearPos3 = -1;
 
 	public int weight;
 
