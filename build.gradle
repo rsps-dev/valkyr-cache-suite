@@ -52,7 +52,7 @@ subprojects {
 		implementation group: 'com.github.jponge', name: 'lzma-java', version: '1.2'
 		implementation group: 'org.lwjgl.lwjgl', name: 'lwjgl', version: '2.9.3'
 		implementation group: 'org.lwjgl.lwjgl', name: 'lwjgl_util', version: '2.9.3'
-		implementation group: 'slick-util', name: 'slick-util', version: '1.0.0'
+		implementation group: 'kephale', name: 'slick-util', version: '1.0.1'
 		compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
 		annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
 		// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
